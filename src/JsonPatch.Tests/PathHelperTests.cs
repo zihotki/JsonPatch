@@ -598,69 +598,6 @@ namespace JsonPatch.Tests
             // NotSupportedException: Collection was of a fixed size.
         }
 
-        [TestMethod]
-        public void SetValueFromPath_AddListValueByIndex_InsertsValue()
-        {
-            //Arrange
-            var entity = new ListEntity
-            {
-                Foo = new List<string> { "Element One", "Element Two" }
-            };
-
-            //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/1", entity, "Element Two Updated", JsonPatchOperationType.add);
-
-            //Assert
-            Assert.AreEqual("Element Two Updated", entity.Foo[1]);
-            Assert.AreEqual("Element Two", entity.Foo[2]);
-            Assert.AreEqual(3, entity.Foo.Count);
-        }
-
-        [TestMethod]
-        public void SetValueFromPath_AddListValue_AddsValue()
-        {
-            //Arrange
-            var entity = new ListEntity
-            {
-                Foo = new List<string> { "Element One", "Element Two" }
-            };
-
-            //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/-", entity, "Element Three", JsonPatchOperationType.add);
-
-            //Assert
-            Assert.AreEqual("Element Three", entity.Foo[2]);
-            Assert.AreEqual(3, entity.Foo.Count);
-        }
-
-        [TestMethod, ExpectedException(typeof(JsonPatchException))]
-        public void SetValueFromPath_AddToNullList_ThrowsException()
-        {
-            //Arrange
-            var entity = new ListEntity();
-
-            //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/0", entity, "Element One", JsonPatchOperationType.add);
-        }
-
-        [TestMethod]
-        public void SetValueFromPath_AddListValueAtEnd_AddsValue()
-        {
-            //Arrange
-            var entity = new ListEntity
-            {
-                Foo = new List<string> { "Element One", "Element Two" }
-            };
-
-            //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/2", entity, "Element Two Updated", JsonPatchOperationType.add);
-
-            //Assert
-            Assert.AreEqual("Element Two Updated", entity.Foo[2]);
-            Assert.AreEqual("Element Two", entity.Foo[1]);
-            Assert.AreEqual(3, entity.Foo.Count);
-        }
-
         [TestMethod, ExpectedException(typeof(JsonPatchException))]
         public void SetValueFromPath_RemoveArrayValue_ThrowsException()
         {
@@ -677,17 +614,82 @@ namespace JsonPatch.Tests
             // NotSupportedException: Collection was of a fixed size
         }
 
+        #region ListEntity tests
+
+        [TestMethod]
+        public void SetValueFromPath_AddListValueByIndex_InsertsValue()
+        {
+            //Arrange
+            var entity = new ListEntity
+            {
+                Foo = new List<string> {"Element One", "Element Two"}
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/1", entity, "Element Two Updated", JsonPatchOperationType.add);
+
+            //Assert
+            Assert.AreEqual("Element Two Updated", entity.Foo[1]);
+            Assert.AreEqual("Element Two", entity.Foo[2]);
+            Assert.AreEqual(3, entity.Foo.Count);
+        }
+
+        [TestMethod]
+        public void SetValueFromPath_AddListValue_AddsValue()
+        {
+            //Arrange
+            var entity = new ListEntity
+            {
+                Foo = new List<string> {"Element One", "Element Two"}
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/-", entity, "Element Three", JsonPatchOperationType.add);
+
+            //Assert
+            Assert.AreEqual("Element Three", entity.Foo[2]);
+            Assert.AreEqual(3, entity.Foo.Count);
+        }
+
+        [TestMethod, ExpectedException(typeof (JsonPatchException))]
+        public void SetValueFromPath_AddToNullList_ThrowsException()
+        {
+            //Arrange
+            var entity = new ListEntity();
+
+            //act
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/0", entity, "Element One", JsonPatchOperationType.add);
+        }
+
+        [TestMethod]
+        public void SetValueFromPath_AddListValueAtEnd_AddsValue()
+        {
+            //Arrange
+            var entity = new ListEntity
+            {
+                Foo = new List<string> {"Element One", "Element Two"}
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/2", entity, "Element Two Updated", JsonPatchOperationType.add);
+
+            //Assert
+            Assert.AreEqual("Element Two Updated", entity.Foo[2]);
+            Assert.AreEqual("Element Two", entity.Foo[1]);
+            Assert.AreEqual(3, entity.Foo.Count);
+        }
+
         [TestMethod]
         public void SetValueFromPath_RemoveListValueFromStart_RemovesValue()
         {
             //Arrange
             var entity = new ListEntity
             {
-                Foo = new List<string> { "Element One", "Element Two" }
+                Foo = new List<string> {"Element One", "Element Two"}
             };
 
             //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/0", entity, null, JsonPatchOperationType.remove);
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/0", entity, null, JsonPatchOperationType.remove);
 
             //Assert
             Assert.AreEqual("Element Two", entity.Foo[0]);
@@ -700,11 +702,11 @@ namespace JsonPatch.Tests
             //Arrange
             var entity = new ListEntity
             {
-                Foo = new List<string> { "Element One", "Element Two" }
+                Foo = new List<string> {"Element One", "Element Two"}
             };
 
             //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/1", entity, null, JsonPatchOperationType.remove);
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/1", entity, null, JsonPatchOperationType.remove);
 
             //Assert
             Assert.AreEqual("Element One", entity.Foo[0]);
@@ -712,18 +714,134 @@ namespace JsonPatch.Tests
         }
 
 
-        [TestMethod, ExpectedException(typeof(JsonPatchException))]
+        [TestMethod, ExpectedException(typeof (JsonPatchException))]
         public void SetValueFromPath_RemoveIndexOutOfBounds_ThrowsException()
         {
             //Arrange
             var entity = new ListEntity
             {
-                Foo = new List<string> { "Element One", "Element Two" }
+                Foo = new List<string> {"Element One", "Element Two"}
             };
 
             //act
-            PathHelper.SetValueFromPath(typeof(ListEntity), "/Foo/2", entity, null, JsonPatchOperationType.remove);
+            PathHelper.SetValueFromPath(typeof (ListEntity), "/Foo/2", entity, null, JsonPatchOperationType.remove);
         }
+
+        #endregion
+
+        #region DictionaryEntity tests
+
+        [TestMethod]
+        public void SetValueFromPath_ReplaceDictionaryByStringKey_UpdatesValue()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<string>
+            {
+                Foo = new Dictionary<string, string> {{"key1", "Element One"}, {"key2", "Element Two"},}
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof (DictionaryEntity<string>), "/Foo/key1", entity, "Element One Updated", JsonPatchOperationType.replace);
+
+            //Assert
+            Assert.AreEqual("Element One Updated", entity.Foo["key1"]);
+            Assert.AreEqual("Element Two", entity.Foo["key2"]);
+            Assert.AreEqual(2, entity.Foo.Count);
+        }
+
+        [TestMethod]
+        public void SetValueFromPath_ReplaceDictionaryByIntKey_UpdatesValue()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<int>
+            {
+                Foo = new Dictionary<int, string> { { 1, "Element One" }, { 2, "Element Two" }, }
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof(DictionaryEntity<int>), "/Foo/2", entity, "Element Two Updated", JsonPatchOperationType.replace);
+
+            //Assert
+            Assert.AreEqual("Element Two Updated", entity.Foo[2]);
+            Assert.AreEqual("Element One", entity.Foo[1]);
+            Assert.AreEqual(2, entity.Foo.Count);
+        }
+
+        [TestMethod]
+        public void SetValueFromPath_AddDictionaryValue_AddsValue()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<int>
+            {
+                Foo = new Dictionary<int, string> { { 1, "Element One" }, { 2, "Element Two" }, }
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof(DictionaryEntity<int>), "/Foo/3", entity, "Element Three", JsonPatchOperationType.add);
+
+            //Assert
+            Assert.AreEqual("Element Three", entity.Foo[3]);
+            Assert.AreEqual(3, entity.Foo.Count);
+        }
+
+        [TestMethod, ExpectedException(typeof(JsonPatchException))]
+        public void SetValueFromPath_AddDictionaryValue_ThrowsForExistingKey()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<int>
+            {
+                Foo = new Dictionary<int, string> { { 1, "Element One" }, { 2, "Element Two" }, }
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof(DictionaryEntity<int>), "/Foo/2", entity, "Element Three", JsonPatchOperationType.add);
+        }
+
+        [TestMethod]
+        public void SetValueFromPath_RemoveDictionaryValue_RemovesValue()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<int>
+            {
+                Foo = new Dictionary<int, string> { { 1, "Element One" }, { 2, "Element Two" }, }
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof(DictionaryEntity<int>), "/Foo/2", entity, null, JsonPatchOperationType.remove);
+
+            //Assert
+            Assert.IsFalse(entity.Foo.ContainsKey(2));
+            Assert.AreEqual(1, entity.Foo.Count);
+        }
+
+        [TestMethod]
+        public void SetValueFromPath_RemoveDictionaryValue_NoopForNonexistingKey()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<int>
+            {
+                Foo = new Dictionary<int, string> { { 1, "Element One" }, { 2, "Element Two" }, }
+            };
+
+            //act
+            PathHelper.SetValueFromPath(typeof(DictionaryEntity<int>), "/Foo/5", entity, null, JsonPatchOperationType.remove);
+
+            //Assert
+            Assert.AreEqual(2, entity.Foo.Count);
+        }
+
+        [TestMethod, ExpectedException(typeof(JsonPatchException))]
+        public void SetValueFromPath_AddToNullDictionary_ThrowsException()
+        {
+            //Arrange
+            var entity = new DictionaryEntity<int>();
+
+            //act
+            PathHelper.SetValueFromPath(typeof(DictionaryEntity<int>), "/Foo/0", entity, "Element One", JsonPatchOperationType.add);
+        }
+
+        #endregion
+
 
         #endregion
 
