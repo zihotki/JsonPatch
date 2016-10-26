@@ -51,11 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Formatting\JsonPatchFormatter.cs" />
     <Compile Include="Helpers\TypeSwitch.cs" />
+    <Compile Include="JsonBatchPatchDocument.cs" />
     <Compile Include="JsonPatchParseException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Formatting\JsonPatchFormatter.cs" />
+    <Compile Include="Formatting\JsonBatchPatchFormatter.cs" />
     <Compile Include="JsonPatchSettings.cs" />
+    <Compile Include="Model\BatchPatchOperation.cs" />
     <Compile Include="Paths\Components\DictionaryPathComponent.cs" />
     <Compile Include="Paths\Components\CollectionPathComponent.cs" />
     <Compile Include="Paths\Components\CollectionIndexPathComponent.cs" />

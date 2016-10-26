@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using JsonPatch.Paths;
 
 namespace JsonPatch
 {
     public class JsonPatchDocument<TEntity> : IJsonPatchDocument where TEntity : class, new()
     {
-        private List<JsonPatchOperation> _operations = new List<JsonPatchOperation>();
+	    public List<JsonPatchOperation> Operations { get; } = new List<JsonPatchOperation>();
 
-        public List<JsonPatchOperation> Operations { get { return _operations; } }
-
-        public bool HasOperations { get { return _operations.Count > 0; } }
+	    public bool HasOperations { get { return Operations.Count > 0; } }
 
         public void Add(string path, object value)
         {
-            _operations.Add(new JsonPatchOperation
+            Operations.Add(new JsonPatchOperation
             {
                 Operation = JsonPatchOperationType.add,
                 Path = path,
@@ -29,7 +23,7 @@ namespace JsonPatch
 
         public void Replace(string path, object value)
         {
-            _operations.Add(new JsonPatchOperation
+            Operations.Add(new JsonPatchOperation
             {
                 Operation = JsonPatchOperationType.replace,
                 Path = path,
@@ -40,7 +34,7 @@ namespace JsonPatch
 
         public void Remove(string path)
         {
-            _operations.Add(new JsonPatchOperation
+            Operations.Add(new JsonPatchOperation
             {
                 Operation = JsonPatchOperationType.remove,
                 Path = path,
@@ -50,7 +44,7 @@ namespace JsonPatch
 
         public void Move(string from, string path)
         {
-            _operations.Add(new JsonPatchOperation
+            Operations.Add(new JsonPatchOperation
             {
                 Operation = JsonPatchOperationType.move,
                 FromPath = from,
@@ -62,7 +56,7 @@ namespace JsonPatch
 
         public void ApplyUpdatesTo(TEntity entity)
         {
-            foreach (var operation in _operations)
+            foreach (var operation in Operations)
             {
                 switch (operation.Operation)
                 {
